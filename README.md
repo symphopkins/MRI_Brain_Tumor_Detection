@@ -1,4 +1,4 @@
-# Brain Tumor Detection with CNN Model and FastAPI
+# MRI Brain Tumor Detection
 
 ## Overview
 
