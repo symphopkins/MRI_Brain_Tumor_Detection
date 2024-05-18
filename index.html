@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MRI Brain Tumor Prediction</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            text-align: center;
+        }
+        .container {
+            margin: 0 auto; 
+            max-width: 600px; 
+        }
+        img {
+            display: block; 
+            margin: 0 auto; 
+            max-width: 100%; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MRI Brain Tumor Prediction</h1>
+        <form id="imageForm" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/*" required>
+            <button type="submit">Predict</button>
+        </form>
+        <div id="predictionResult"></div>
+
+        <div class="disclaimer">
+            <p>This is a personal project and is not intended for use in the detection of brain tumors. Always consult with a qualified healthcare professional for medical advice and diagnosis.</p>
+        </div>
+
+        <img src="https://medicine.wustl.edu/wp-content/uploads/GlioblastomaBranScans.jpg">
+    </div>
+
+    <script>
+        document.getElementById("imageForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            var formData = new FormData();
+            var fileInput = document.querySelector('input[type="file"]');
+            if (fileInput.files.length === 0) {
+                document.getElementById("predictionResult").innerText = "Error: No file chosen";
+                return;
+            }
+            
+            formData.append("file", fileInput.files[0]);
+
+            fetch("http://127.0.0.1:8000/predict", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Server response:", data);  
+                if (data.prediction) {
+                    document.getElementById("predictionResult").innerText = "Prediction: " + data.prediction;
+                } else {
+                    document.getElementById("predictionResult").innerText = "Error: " + (data.error || "Unexpected response format");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                document.getElementById("predictionResult").innerText = "Error: " + error.message;
+            });
+        });
+    </script>
+</body>
+</html>
