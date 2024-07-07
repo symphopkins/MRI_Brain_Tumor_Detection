@@ -22,7 +22,7 @@ The dataset used for training and testing the model is sourced from Kaggle. It c
 
 1. **Training the Model**: Execute the code in `mri_model_training.ipynb` to train the CNN model using the provided dataset. Adjust hyperparameters as needed.
 
-2. **Starting the API**: Run `mri_model_api.py` to start the FastAPI-based model API. Ensure that all dependencies listed in `requirements.txt` are installed.
+2. **Starting the API**: Run `mri_model_api.py` to start the model. Ensure that all dependencies listed in `requirements.txt` are installed.
 
 3. **Testing the API**: Use any HTTP client to interact with the model API.
 
